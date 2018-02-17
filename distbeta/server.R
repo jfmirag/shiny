@@ -27,4 +27,21 @@ shinyServer(function(input, output) {
     
   })
   
+  output$distPlot1 <- renderPlot({
+    
+    # generate bins based on input$bins from ui.R
+    fb=function(x,media,desviacion){
+      y=(1/beta((media*(1-desviacion^2))/desviacion^2,(1-media)*(1-desviacion^2)/desviacion^2))*(x^(((media*(1-desviacion^2))/desviacion^2)-1))*((1-x)^((1-media)*((1-desviacion^2)/desviacion^2)-1))
+      return(y)
+    }
+    a=(input$miu*(1-input$sigma^2))/input$sigma^2
+    b=(1-input$miu)*(1-input$sigma^2)/input$sigma^2
+    curve(dbeta(x, shape1 = a, shape2 = b)) 
+    
+    
+    # draw the histogram with the specified number of bins
+    
+    
+  })
+  
 })
