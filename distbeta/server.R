@@ -1,11 +1,4 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 
@@ -14,34 +7,29 @@ shinyServer(function(input, output) {
    
   output$distPlot <- renderPlot({
     
-    # generate bins based on input$bins from ui.R
+
     fb=function(x,media,desviacion){
       y=(1/beta((media*(1-desviacion^2))/desviacion^2,(1-media)*(1-desviacion^2)/desviacion^2))*(x^(((media*(1-desviacion^2))/desviacion^2)-1))*((1-x)^((1-media)*((1-desviacion^2)/desviacion^2)-1))
       return(y)
       }
-    curve(fb(x, media = input$miu, desviacion = input$sigma)) 
-    
-    
-    # draw the histogram with the specified number of bins
-    
-    
+    curve(fb(x, media = input$miu, desviacion = input$sigma),ylab = "Densidad") 
+  
   })
   
   output$distPlot1 <- renderPlot({
-    
-    # generate bins based on input$bins from ui.R
-    fb=function(x,media,desviacion){
-      y=(1/beta((media*(1-desviacion^2))/desviacion^2,(1-media)*(1-desviacion^2)/desviacion^2))*(x^(((media*(1-desviacion^2))/desviacion^2)-1))*((1-x)^((1-media)*((1-desviacion^2)/desviacion^2)-1))
-      return(y)
-    }
+
     a=(input$miu*(1-input$sigma^2))/input$sigma^2
     b=(1-input$miu)*(1-input$sigma^2)/input$sigma^2
-    curve(dbeta(x, shape1 = a, shape2 = b)) 
-    
-    
-    # draw the histogram with the specified number of bins
-    
-    
+    curve(dbeta(x, shape1 = a, shape2 = b),ylab = "Densidad") 
+  
+  })
+  
+  output$alfbet <- renderText({
+    a =(input$miu*(1-input$sigma^2))/input$sigma^2
+    b =(1-input$miu)*(1-input$sigma^2)/input$sigma^2
+
+    paste(c("Para esta configuracion Alpha = ", a,
+            " y Beta =", b))
   })
   
 })
